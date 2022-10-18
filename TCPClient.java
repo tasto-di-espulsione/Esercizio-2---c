@@ -20,6 +20,10 @@ public class TCPClient {
 		String clientMsg = "";
 		String serverMsg = "";
 		
+		boolean quit=false;
+		int vocali;
+		int consonanti;
+
 		try {
 			// Create connection to server socket
 			System.out.print("Client: Connessione al server=" + severAddress + ":" + severPort + " ... ");
@@ -35,7 +39,7 @@ public class TCPClient {
 			// Output stream 
 			DataOutputStream outSocketStream = new DataOutputStream(socket.getOutputStream());
 			
-			while (!clientMsg.equals("quit")) {
+			while (quit==false) {
 				// Prompt user to enter some text or 'quit'
 				System.out.print("Client: inserisci il messaggio da inviare> ");
 				//clientMsg = scanner.nextLine();
@@ -49,6 +53,22 @@ public class TCPClient {
 				// Read data from socket input stream
 				serverMsg = inSocketStream.readUTF();
 				System.out.println("Client: ricevuto il messaggio: " + serverMsg);
+				
+				//Controllo vocali e consonanti
+				vocali=0;
+				consonanti=0;
+				for (int i=0; i < clientMsg.length(  ); i++){
+					if(Character.isLetter(clientMsg.charAt(i)))
+						if(clientMsg.charAt(i)=='a'||clientMsg.charAt(i)=='A'||clientMsg.charAt(i)=='e'||clientMsg.charAt(i)=='E'||clientMsg.charAt(i)=='i'||
+						clientMsg.charAt(i)=='I'||clientMsg.charAt(i)=='o'||clientMsg.charAt(i)=='O'||clientMsg.charAt(i)=='u'||clientMsg.charAt(i)=='U')
+							vocali++;
+						else 
+							consonanti++;
+				}
+
+				if(vocali==consonanti){
+					quit=true;
+				}
 			}
 
 			// Close resources
